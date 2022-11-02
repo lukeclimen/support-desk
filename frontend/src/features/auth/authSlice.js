@@ -4,9 +4,12 @@ import {
 } from "@reduxjs/toolkit";
 import authService from "./authService";
 
+// Get user from local storage
+const user = JSON.parse(localStorage.getItem("user"));
+
 // Default state for Authentication
 const initialState = {
-	user: null,
+	user: user ? user : null,
 	isError: false,
 	isSuccess: false,
 	isLoading: false,
