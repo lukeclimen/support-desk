@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { register } from "../features/auth/authSlice";
 
 function Register() {
 	const [formData, setFormData] = useState({
 		name: "",
-		emial: "",
+		email: "",
 		password: "",
 		password2: "",
 	});
 
 	// Destructure the formData state values
 	const { name, email, password, password2 } = formData;
+
+	// This allows us to dispatch our actions
+	const dispatch = useDispatch();
+
+	// useSelector hook allows us to select from our global state
+	const { user, isLoading, isSuccess, message } =
+		useSelector((state) => state.auth);
 
 	// Function to handle form fields changing value (someone typing into them)
 	const onChange = (event) => {
@@ -28,6 +37,13 @@ function Register() {
 		// Verify that the passwords match
 		if (password !== password2) {
 			toast.error("Passwords do not match");
+		} else {
+			const userData = {
+				name,
+				email,
+				password,
+			};
+			dispatch(register(userData));
 		}
 	};
 
