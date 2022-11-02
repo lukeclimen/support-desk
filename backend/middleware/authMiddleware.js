@@ -24,7 +24,9 @@ const protect = asyncHandler(async (req, res, next) => {
 				decoded.id
 			).select("-password");
 
-			next();
+			// Bug fix where next is called if no user in DB found
+			if (req.user) next();
+			else throw new Error("User not found");
 		} catch (error) {
 			res.status(401);
 			throw new Error("You don't have permission");
