@@ -1,10 +1,31 @@
-import React from "react";
+import { Link } from "react-router-dom";
+import {
+	FaQuestionCircle,
+	FaTicketAlt,
+} from "react-icons/fa";
 
 function Home() {
 	return (
-		<div>
-			<h1>Home</h1>
-		</div>
+		<>
+			<section className='heading'>
+				<h1>What do you need help with?</h1>
+				<p>
+					Please choose from the following options
+				</p>
+			</section>
+			<Link
+				to='/new-ticket'
+				className='btn btn-reverse btn-block'
+			>
+				<FaQuestionCircle /> Create new Ticket
+			</Link>
+			<Link
+				to='/tickets'
+				className='btn btn-block'
+			>
+				<FaTicketAlt /> View your Tickets
+			</Link>
+		</>
 	);
 }
 
