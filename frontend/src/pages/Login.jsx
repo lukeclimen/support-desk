@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { login, reset } from "../features/auth/authSlice";
 
 function Login() {
 	const [formData, setFormData] = useState({
@@ -14,10 +17,33 @@ function Login() {
 
 	// This allows us to dispatch our actions
 	const dispatch = useDispatch();
+	// This allows us to programatically navigate using an action
+	const navigate = useNavigate();
 
 	// useSelector hook allows us to select from our global state
-	const { user, isLoading, isSuccess, message } =
+	const { user, isError, isLoading, isSuccess, message } =
 		useSelector((state) => state.auth);
+
+	// useEffect to reset the state after a login attempt
+	useEffect(() => {
+		// Handling an error in login
+		if (isError) {
+			toast.error(message);
+		}
+		// Handling a successful login (login and redirect)
+		if (isSuccess || user) {
+			navigate("/");
+		}
+		// Reset the userData state
+		dispatch(reset());
+	}, [
+		isError,
+		isSuccess,
+		user,
+		message,
+		navigate,
+		dispatch,
+	]);
 
 	// Function to handle form fields changing value (someone typing into them)
 	const onChange = (event) => {
